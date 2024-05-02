@@ -1,9 +1,14 @@
 #
-#   LAST UPDATED: WEDNESDAY 5/1
-#   CURRENTLY FRAMEWORK - NOT COMPLETED
+#   LAST UPDATED: THURSDAY 5/2
 #   COMMENTS HAVE PLANNED FUNCTIONALITY
 #   "x = 1" is just placeholder code so empty functions don't give error messages
 #
+# To do:
+# - Complete minor adjustment to "loadShows" (the duration entry is not just a number)
+# - Complete loadAssociations
+# - Complete first portion of getMovieStats and getTVStats
+# - Complete searchTVMovies and searchBooks (same framework)
+# - Complete getRecommendations
 
 import os
 import tkinter.filedialog
@@ -45,8 +50,12 @@ class Recommender:
             strippedLine = line.strip()
             item = strippedLine.split(",")
             for x in item:
+
+                # Create a small thing that splits the "Duration" entry into 2 parts
+                # Use the first part (the number) for the duration value
+
                 self.shows[item[0]] = Show(item[0], item[2], item[5], item[1], item[3], item[4], item[6],
-                                           item[7], item[8], item[10], item[12])
+                                           item[7], item[8], item[9], item[10], item[11], item[12])
         showsLines.close()
 
     def loadAssociations(self):
@@ -73,48 +82,164 @@ class Recommender:
 
     # GetLists use the same framework
     def getMovieList(self):
-        x = 1
         # Returns Title and Runtime for ALL stored movies, such that:
         # Data has the header Title and Movie
         # All of the data is in neat, even columns, whose width is determined
         # based on the length of the entries in the data
+        for key in self.shows:
+            if self.shows[key][3] == "Movie":
+                print(f"{self.shows[key][1]}, {self.shows[key][-3]}")
+        return
+
     def getTVList(self):
-        x = 1
         # Returns Title and Seasons for ALL stored shows, such that:
         # Data has the header Title and Seasons
         # All of the data is in neat, even columns, whose width is determined
         # based on the length of the entries in the data
+        for key in self.shows:
+            if self.shows[key][3] == "TV Show":
+                print(f"{self.shows[key][1]}, {self.shows[key][-3]}")
+        return
+
     def getBookList(self):
-        x = 1
         # Returns Title and Author(s) for ALL stored books, such that:
         # Data has the header Title and Author(s)
         # All of the data is in neat, even columns, whose width is determined
         # based on the length of the entries in the data
+        for key in self.books:
+            print(f"{self.books[key][1]}, {self.books[key][3]}")
+        return
+
 
     # GetStats use the same framework
     def getMovieStats(self):
-        x = 1
         # Returns statistics regarding movies, such as:
+
+        # Currently needs to be implemented
         # Rating for movies (G, PG, R, etc…) and the number of times a particular rating appears
             # as a percentage of all of the ratings for movies, with two decimals of precision
+
+        # This is incomplete, refer to Project 2 document
+        increment = 0
+        for key in self.shows:
+            if self.shows[key][3] == "Movie":
+
+                increment += 1
+
         # Average movie duration in minutes, with two decimals of precision
+        durationAccumulator = 0
+        durationIncrement = 0
+        for key in self.shows:
+            if self.shows[key][3] == "Movie":
+                durationAccumulator += self.shows[key][-2]
+                durationIncrement += 1
+        avgMovieDuration = durationAccumulator / durationIncrement
+        # Add 2 decimals of precision
+
         # The director who has directed the most movies
+        directorCount = {}
+        for key in self.shows:
+            if self.shows[key][3] == "Movie":
+                if self.shows[key][4] in directorCount:
+                    directorCount[f"{self.shows[key][4]}"] += 1
+                else:
+                    directorCount[f"{self.shows[key][4]}"] = 0
+        print(max(directorCount, key=directorCount.get))
+
         # The actor who has acted in the most movies
+        actorCount = {}
+        for key in self.shows:
+            if self.shows[key][3] == "Movie":
+                if self.shows[key][11] in actorCount:
+                    actorCount[f"{self.shows[key][11]}"] += 1
+                else:
+                    actorCount[f"{self.shows[key][11]}"] = 0
+        print(max(actorCount, key=actorCount.get))
+
         # The most frequent movie genre across the movie library
+        genreCount = {}
+        for key in self.shows:
+            if self.shows[key][3] == "Movie":
+                if self.shows[key][5] in genreCount:
+                    genreCount[f"{self.shows[key][5]}"] += 1
+                else:
+                    genreCount[f"{self.shows[key][5]}"] = 0
+        print(max(genreCount, key=genreCount.get))
+
+        return
+
+
     def getTVStats(self):
-        x = 1
         # Returns the statistics regarding TV shows, such as:
+
+        # Currently needs to be implemented
         # Rating for TV shows (G, PG, R, etc…) and the number of times a particular rating appears
             # as a percentage of all of the ratings for tv shows, with two decimals of precision
+
         # Average number of seasons for tv shows, with two decimals of precision
+        durationAccumulator = 0
+        durationIncrement = 0
+        for key in self.shows:
+            if self.shows[key][3] == "TV Show":
+                durationAccumulator += self.shows[key][-2]
+                durationIncrement += 1
+        avgMovieDuration = durationAccumulator / durationIncrement
+        # Add 2 decimals of precision
+
         # The actor who has acted in the most tv shows
+        actorCount = {}
+        for key in self.shows:
+            if self.shows[key][3] == "TV Show":
+                if self.shows[key][11] in actorCount:
+                    actorCount[f"{self.shows[key][11]}"] += 1
+                else:
+                    actorCount[f"{self.shows[key][11]}"] = 0
+        print(max(actorCount, key=actorCount.get))
+
         # The most frequent tv show genre across the TV show library
+        genreCount = {}
+        for key in self.shows:
+            if self.shows[key][3] == "TV Show":
+                if self.shows[key][5] in genreCount:
+                    genreCount[f"{self.shows[key][5]}"] += 1
+                else:
+                    genreCount[f"{self.shows[key][5]}"] = 0
+        print(max(genreCount, key=genreCount.get))
+
+        return
+
+
     def getBookStats(self):
-        x = 1
         # Returns the statistics regarding Books, such as:
+
         # The average page count, with two decimals of precision
+        pageAccumulator = 0
+        pageIncrementer = 0
+        for key in self.books:
+            pageAccumulator += self.books[key][6]
+            pageIncrementer += 1
+        avgPageCount = pageAccumulator / pageIncrementer
+        # Add 2 decimals of precision
+
         # The author who has written the most books
+        authorCount = {}
+        for key in self.books:
+            if self.books[key][3] in authorCount:
+                authorCount[f"{self.books[key][3]}"] += 1
+            else:
+                authorCount[f"{self.books[key][3]}"] = 0
+        print(max(authorCount, key=authorCount.get))
+
         # The publisher who has published the most books
+        publisherCount = {}
+        for key in self.books:
+            if self.books[key][9] in publisherCount:
+                publisherCount[f"{self.books[key][9]}"] += 1
+            else:
+                publisherCount[f"{self.books[key][9]}"] = 0
+        print(max(publisherCount, key=publisherCount.get))
+
+        return
 
     # Searches use the same framework
     def searchTVMovies(self, choiceMovieTV, title, director, actor, genre):
