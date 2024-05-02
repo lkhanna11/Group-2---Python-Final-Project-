@@ -1,7 +1,7 @@
 from Media import Media
 
 class Show(Media):
-    def __init__(self, id, title, rating, type, director, actor, country, added_date, released_year,showRating,duration,description):
+    def __init__(self, id, title, rating, type, director, actor, country, added_date, released_year,showRating,duration,genre, description):
         super().__init__(id, title, rating)
         self.__type = type
         self.__director = director
@@ -12,6 +12,7 @@ class Show(Media):
         self.__duration = duration
         self.__description = description
         self.__showRating = showRating
+        self.__genre = genre
 
     def get_type(self):
         return self.__type
@@ -66,3 +67,9 @@ class Show(Media):
 
     def set_showRating(self, value):
         self.__showRating = value
+
+    def get_genre(self):
+        return self.__genre
+
+    def set_genre(self, value):
+        self.__genre = value
