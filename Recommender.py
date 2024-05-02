@@ -1,9 +1,16 @@
 #
-#   LAST UPDATED: MONDAY 4/29
+#   LAST UPDATED: WEDNESDAY 5/1
 #   CURRENTLY FRAMEWORK - NOT COMPLETED
 #   COMMENTS HAVE PLANNED FUNCTIONALITY
 #   "x = 1" is just placeholder code so empty functions don't give error messages
 #
+
+import os
+import tkinter.filedialog
+
+from Book import Book
+from Media import Media
+from Show import Show
 
 class Recommender:
     def __init__(self):
@@ -16,51 +23,52 @@ class Recommender:
 
     # LoadBooks and Shows use the same framework
     def loadBooks(self):
-        x = 1
-        # Prompt user for the name of a file using an appropriate FILEDIALOG
-        # If the user does not choose an existing file, prompt the user again.
-        # Repeats until a valid file is entered
+        booksFile = tkinter.filedialog.askopenfilename(title="Choose a book file to load from", initialdir=os.getcwd())
+        while not os.path.exists(f"{booksFile}"):
+            booksFile = tkinter.filedialog.askopenfilename(title="Choose a book file to load from", initialdir=os.getcwd())
 
-        # Open the file
-        # Read the file one entry at a time
-        # Store the entry for each book in a Book object
-        # Store each Book object in a dictionary, using the book's ID as the key,
-            # and the Book object as the value (^1)
-        # Close the file once all the data has been read in
+        booksLines = open(f"{booksFile}", "r")
+        for line in booksLines:
+            strippedLine = line.strip()
+            item = strippedLine.split(",")
+            for x in item:
+                self.books[item[0]] = Book(item[0], item[1], item[3], item[2], item[4], item[6], item[7], item[3], item[9], item[10])
+        booksLines.close()
+
     def loadShows(self):
-        x = 1
-        # Prompt user for the name of a file using an appropriate FILEDIALOG
-        # If the user does not choose an existing file, prompt the user again.
-        # Repeats until a valid file is entered
+        showsFile = tkinter.filedialog.askopenfilename(title="Choose a show file to load from", initialdir=os.getcwd())
+        while not os.path.exists(f"{showsFile}"):
+            showsFile = tkinter.filedialog.askopenfilename(title="Choose a show file to load from", initialdir=os.getcwd())
 
-        # Open the file
-        # Read the file one entry at a time
-        # Store the entry for each show in a Show object
-        # Store each Show object in a dictionary, using the shows's ID as the key,
-            # and the Show object as the value (^2)
-        # Close the file once all the data has been read in
+        showsLines = open(f"{showsFile}", "r")
+        for line in showsLines:
+            strippedLine = line.strip()
+            item = strippedLine.split(",")
+            for x in item:
+                self.shows[item[0]] = Show(item[0], item[2], item[5], item[1], item[3], item[4], item[6],
+                                           item[7], item[8], item[10], item[12])
+        showsLines.close()
 
     def loadAssociations(self):
-        x = 1
-        # Prompt user for the name of a file using an appropriate FILEDIALOG
-        # If the user does not choose an existing file, prompt the user again.
-        # Repeats until a valid file is entered
+        assocFile = tkinter.filedialog.askopenfilename(title="Choose a show file to load from", initialdir=os.getcwd())
+        while not os.path.exists(f"{assocFile}"):
+            assocFile = tkinter.filedialog.askopenfilename(title="Choose a show file to load from", initialdir=os.getcwd())
 
-        # Open the file
-        # Read the file one entry at a time
-
-        # Using the first ID as a key, determine if there is a dictionary associated with it (INNER DICTIONARY)
-            # (should be a simple find function, go back to dictionary presentation)
-        # If nothing is found, create a new dictionary, add the second ID to the new dictionary
-        # The second ID must be associated with the value 1
-        # Otherwise, determine if the second ID is a key in the second dictionary
-            # If it is, increment count associated with it by 1
-            # Otherwise, set the count associated with it to 1
-
-        # Do thsi again, but this time with
+        assocLines = open({f"{assocFile}", "r"})
+        for line in assocLines:
+            strippedLine = line.strip()
+            item = strippedLine.split(",")
+            for x in item:
+                y = 1
+                # Using the first ID as a key, determine if there is a dictionary associated with it
+                    # If nothing is found, create a new dictionary, add the second ID to the new dictionary
+                    # The second ID must be associated with the value 1
+                # Otherwise, determine if the second ID is a key in the second dictionary
+                    # If it is, increment count associated with it by 1
+                    # Otherwise, set the count associated with it to 1
+        # Do this again, but this time with
             # The second ID for the outer dictionary
             # The first ID for the inner dictionary
-
         # Close the file once all the data has been read in
 
     # GetLists use the same framework
