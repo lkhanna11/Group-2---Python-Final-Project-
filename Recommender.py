@@ -1,18 +1,7 @@
 #
-#   LAST UPDATED: THURSDAY 5/2
-#   COMMENTS HAVE PLANNED FUNCTIONALITY
-#   "x = 1" is just placeholder code so empty functions don't give error messages
-#
+#   LAST UPDATED: FRIDAY 5/3
 # To do:
-# - Test minor adjustment to loadShows
-#     (All functionality implemented)
-# - Complete loadAssociations
-#     (Second portion of the function)
-# - Test getMovieStats and getTVStats
-#     (All functionality implemented)
-# - Test searchTVMovies and searchBooks
-#     (I'm not sure what is meant by "columns" in relation to the string, and having each title on top of it)
-# - Complete getRecommendations
+# - Test all functions
 
 import os
 import tkinter.filedialog
@@ -44,6 +33,7 @@ class Recommender:
             for x in item:
                 self.books[item[0]] = Book(item[0], item[1], item[3], item[2], item[4], item[6], item[7], item[3], item[9], item[10])
         booksLines.close()
+        return
 
     def loadShows(self):
         showsFile = tkinter.filedialog.askopenfilename(title="Choose a show file to load from", initialdir=os.getcwd())
@@ -64,6 +54,7 @@ class Recommender:
                 self.shows[item[0]] = Show(item[0], item[2], item[5], item[1], item[3], item[4], item[6],
                                            item[7], item[8], item[9], item[10], item[11], item[12])
         showsLines.close()
+        return
 
     def loadAssociations(self):
         assocFile = tkinter.filedialog.askopenfilename(title="Choose a show file to load from", initialdir=os.getcwd())
@@ -72,21 +63,28 @@ class Recommender:
 
         assocLines = open(f"{assocFile}", "r")
         for line in assocLines:
-            strippedLine = line.strip()
-            item = strippedLine.split(",")
-            for x in item:
-                y = 1
-                # Using the first ID as a key, determine if there is a dictionary associated with it
-                    # If nothing is found, create a new dictionary, add the second ID to the new dictionary
-                    # The second ID must be associated with the value 1
-                # Otherwise, determine if the second ID is a key in the second dictionary
-                    # If it is, increment count associated with it by 1
-                    # Otherwise, set the count associated with it to 1
-        # Do this again, but this time with
-            # The second ID for the outer dictionary
-            # The first ID for the inner dictionary
-        # Close the file once all the data has been read in
+            if line.strip():  # Checking if line is not empty
+                first_id, second_id = line.strip().split()
+
+                # Update dictionary for first_id
+                if first_id not in self.associations:
+                    self.associations[first_id] = {second_id: 1}
+                else:
+                    if second_id in self.associations[first_id]:
+                        self.associations[first_id][second_id] += 1
+                    else:
+                        self.associations[first_id][second_id] = 1
+
+                # Update dictionary for second_id
+                if second_id not in self.associations:
+                    self.associations[second_id] = {first_id: 1}
+                else:
+                    if first_id in self.associations[second_id]:
+                        self.associations[second_id][first_id] += 1
+                    else:
+                        self.associations[second_id][first_id] = 1
         assocLines.close()
+        return
 
     # GetLists use the same framework
     def getMovieList(self):
@@ -288,6 +286,8 @@ class Recommender:
         # the user’s data
         movieSearchString = ""
         for key in self.shows:
+            # add to If statement: If choiceMovieTV is in self.shows[key][2],
+            # since we are only taking the selected media type (TV or Movie)
             if title in self.shows[key][1] and director in self.shows[key][4] and actor in self.shows[key][5] and genre in self.shows[key][11]:
                 movieSearchString += f"Title: {self.shows[key][1]}\n"
                 movieSearchString += f"Director: {self.shows[key][4]}\n"
@@ -323,23 +323,32 @@ class Recommender:
         return bookSearchString
 
     def getReccomendations(self, type, title):
-        x = 1
         # returns a string containing recommendations regarding Movies, TV Shows, or Books:
 
         # If the type is Movie or TV Show, search through the shows dictionary and determine the
         # id associated with that title
-            # If the title is not in the dictionary, spawn a showwarning messagebox
-            # informing the user that there are no recommendations for that title, and return
-            # No results
-            # Otherwise, using that movie or tv show id, determine all of the books associated
-            # with that id in the association dictionary, and return a string containing all of the
-            # information for each book with appropriate titles for each piece of information
+        recommendationResult = ""
+        if type == "Movie" or type == "TV Show":
+            for key in self.shows:
+                if title in self.shows[key][1]:
+                    if self.shows[key][0] in self.associations:
+                        associated_id = self.associations[self.shows[key][0]]
+                        for i in range(11):
+                            recommendationResult += f"{self.books[associated_id][i]}\n"
+                        return recommendationResult
+                    else:
+                        tkinter.messagebox.showwarning(title="Warning", message="There are no recommendations for that title.")
+                        return "No Results"
         # If the type is Book, search through the books dictionary and determine the id associated
         # with that title
-            # If the title is not in the dictionary, spawn a showwarning messagebox
-            # informing the user that there are no recommendations for that title, and return
-            # No results
-            # Otherwise, using that book id, determine all of the movies and tv shows
-            # associated with that id in the association dictionary, and return a string
-            # containing all of the information for each movie or tv show with appropriate
-            # titles for each piece of information
+        if type == "Book":
+            for key in self.books:
+                if title in self.books[key][1]:
+                    if self.books[key][0] in self.associations:
+                        associated_id = self.associations[self.books[key][0]]
+                        for i in range(14):
+                            recommendationResult += f"{self.shows[associated_id][i]}\n"
+                        return recommendationResult
+                    else:
+                        tkinter.messagebox.showwarning(title="Warning", message="There are no recommendations for that title.")
+                        return "No Results"
