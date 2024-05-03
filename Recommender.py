@@ -4,11 +4,14 @@
 #   "x = 1" is just placeholder code so empty functions don't give error messages
 #
 # To do:
-# - Complete minor adjustment to "loadShows" (the duration entry is not just a number)
-# - Complete second portion loadAssociations
-# - Complete first portion of getMovieStats and getTVStats
+# - Test minor adjustment to loadShows
+#     (All functionality implemented)
+# - Complete loadAssociations
+#     (Second portion of the function)
+# - Test getMovieStats and getTVStats
+#     (All functionality implemented)
 # - Test searchTVMovies and searchBooks
-#     (I'm not sure what they mean by "columns" in relation to the string, and having each title on top of it)
+#     (I'm not sure what is meant by "columns" in relation to the string, and having each title on top of it)
 # - Complete getRecommendations
 
 import os
@@ -55,6 +58,8 @@ class Recommender:
 
                 # Create a small thing that splits the "Duration" entry into 2 parts
                 # Use the first part (the number) for the duration value
+                duration = item[10].split(" ")
+                item[10] = duration[0]
 
                 self.shows[item[0]] = Show(item[0], item[2], item[5], item[1], item[3], item[4], item[6],
                                            item[7], item[8], item[9], item[10], item[11], item[12])
@@ -65,7 +70,7 @@ class Recommender:
         while not os.path.exists(f"{assocFile}"):
             assocFile = tkinter.filedialog.askopenfilename(title="Choose a show file to load from", initialdir=os.getcwd())
 
-        assocLines = open({f"{assocFile}", "r"})
+        assocLines = open(f"{assocFile}", "r")
         for line in assocLines:
             strippedLine = line.strip()
             item = strippedLine.split(",")
@@ -81,12 +86,13 @@ class Recommender:
             # The second ID for the outer dictionary
             # The first ID for the inner dictionary
         # Close the file once all the data has been read in
+        assocLines.close()
 
     # GetLists use the same framework
     def getMovieList(self):
         # Returns Title and Runtime for ALL stored movies, such that:
         # Data has the header Title and Movie
-        # All of the data is in neat, even columns, whose width is determined
+        # All the data is in neat, even columns, whose width is determined
         # based on the length of the entries in the data
         for key in self.shows:
             if self.shows[key][3] == "Movie":
@@ -96,7 +102,7 @@ class Recommender:
     def getTVList(self):
         # Returns Title and Seasons for ALL stored shows, such that:
         # Data has the header Title and Seasons
-        # All of the data is in neat, even columns, whose width is determined
+        # All the data is in neat, even columns, whose width is determined
         # based on the length of the entries in the data
         for key in self.shows:
             if self.shows[key][3] == "TV Show":
@@ -117,25 +123,30 @@ class Recommender:
     def getMovieStats(self):
         # Returns statistics regarding movies, such as:
 
-        # Currently needs to be implemented
         # Rating for movies (G, PG, R, etc…) and the number of times a particular rating appears
-            # as a percentage of all of the ratings for movies, with two decimals of precision
-
-        # This is incomplete, refer to Project 2 document
-        increment = 0
+        # as a percentage of all the ratings for movies, with two decimals of precision
+        movieRatingTotal = 0
+        movieRatings = {}
         for key in self.shows:
             if self.shows[key][3] == "Movie":
-
-                increment += 1
+                if self.shows[key][9] in movieRatings:
+                    movieRatings[f"{self.shows[key][9]}"] += 1
+                else:
+                    movieRatings[f"{self.shows[key][9]}"] = 0
+                movieRatingTotal += 1
+        for key in movieRatings:
+            ratingPercent = movieRatings[key] / movieRatingTotal
+            print(f"Rated {key}: {movieRatings[key]} movies ({ratingPercent} of all movies)")
+            # Add 2 decimals of precision
 
         # Average movie duration in minutes, with two decimals of precision
         durationAccumulator = 0
-        durationIncrement = 0
+        durationTotal = 0
         for key in self.shows:
             if self.shows[key][3] == "Movie":
                 durationAccumulator += self.shows[key][-2]
-                durationIncrement += 1
-        avgMovieDuration = durationAccumulator / durationIncrement
+                durationTotal += 1
+        avgMovieDuration = durationAccumulator / durationTotal
         # Add 2 decimals of precision
 
         # The director who has directed the most movies
@@ -174,18 +185,30 @@ class Recommender:
     def getTVStats(self):
         # Returns the statistics regarding TV shows, such as:
 
-        # Currently needs to be implemented
         # Rating for TV shows (G, PG, R, etc…) and the number of times a particular rating appears
-            # as a percentage of all of the ratings for tv shows, with two decimals of precision
+        # as a percentage of all the ratings for tv shows, with two decimals of precision
+        showRatingTotal = 0
+        showRatings = {}
+        for key in self.shows:
+            if self.shows[key][3] == "TV Show":
+                if self.shows[key][9] in showRatings:
+                    showRatings[f"{self.shows[key][9]}"] += 1
+                else:
+                    showRatings[f"{self.shows[key][9]}"] = 0
+                showRatingTotal += 1
+        for key in showRatings:
+            ratingPercent = showRatings[key] / showRatingTotal
+            print(f"Rated {key}: {showRatings[key]} movies ({ratingPercent} of all shows)")
+            # Add 2 decimals of precision
 
         # Average number of seasons for tv shows, with two decimals of precision
         durationAccumulator = 0
-        durationIncrement = 0
+        durationTotal = 0
         for key in self.shows:
             if self.shows[key][3] == "TV Show":
                 durationAccumulator += self.shows[key][-2]
-                durationIncrement += 1
-        avgMovieDuration = durationAccumulator / durationIncrement
+                durationTotal += 1
+        avgMovieDuration = durationAccumulator / durationTotal
         # Add 2 decimals of precision
 
         # The actor who has acted in the most tv shows
@@ -216,11 +239,11 @@ class Recommender:
 
         # The average page count, with two decimals of precision
         pageAccumulator = 0
-        pageIncrementer = 0
+        pageTotal = 0
         for key in self.books:
             pageAccumulator += self.books[key][6]
-            pageIncrementer += 1
-        avgPageCount = pageAccumulator / pageIncrementer
+            pageTotal += 1
+        avgPageCount = pageAccumulator / pageTotal
         # Add 2 decimals of precision
 
         # The author who has written the most books
