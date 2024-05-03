@@ -5,13 +5,15 @@
 #
 # To do:
 # - Complete minor adjustment to "loadShows" (the duration entry is not just a number)
-# - Complete loadAssociations
+# - Complete second portion loadAssociations
 # - Complete first portion of getMovieStats and getTVStats
-# - Complete searchTVMovies and searchBooks (same framework)
+# - Test searchTVMovies and searchBooks
+#     (I'm not sure what they mean by "columns" in relation to the string, and having each title on top of it)
 # - Complete getRecommendations
 
 import os
 import tkinter.filedialog
+import tkinter.messagebox
 
 from Book import Book
 from Media import Media
@@ -243,36 +245,59 @@ class Recommender:
 
     # Searches use the same framework
     def searchTVMovies(self, choiceMovieTV, title, director, actor, genre):
-        x = 1
         # Returns information regarding movies and shows, such that:
 
         # If the string representing the movie or tv show is neither Movie nor TV Show, spawn a
         # showerror messagebox and inform the user the need to select Movie or TV Show
         # from Type first, and return the string No Results
+        if choiceMovieTV is not ("Movie" or "TV Show"):
+            tkinter.messagebox.showerror(title="Invalid type", message="Please select either Movie or TV Show!")
+            return "No Results"
 
         # If the strings representing title, director, actor, and genre are all empty, spawn a
         # showerror messagebox and inform the user the need to enter information for the
         # Title, Directory, Actor and/or Genre first, and return the string No Results
+        if title == "" and director == "" and actor == "" and genre == "":
+            tkinter.messagebox.showerror(title="Invalid entries", message="Please enter category information!")
+            return "No Results"
 
         # Otherwise, search through the dictionary of shows and select all objects that adhere to
         # the user’s data
-
+        movieSearchString = ""
+        for key in self.shows:
+            if title in self.shows[key][1] and director in self.shows[key][4] and actor in self.shows[key][5] and genre in self.shows[key][11]:
+                movieSearchString += f"Title: {self.shows[key][1]}\n"
+                movieSearchString += f"Director: {self.shows[key][4]}\n"
+                movieSearchString += f"Actor: {self.shows[key][5]}\n"
+                movieSearchString += f"Genre: {self.shows[key][11]}\n"
+                movieSearchString += "\n"
         # Return a string containing the Title, Director, Actors, and Genre (with those titles at the
         # top) in neat, even columns, whose width is determined based on the length of the
         # entries in the data
+        return movieSearchString
+
     def searchBooks(self, title, author, publisher):
-        x = 1
         # Returns information regarding books, such that:
 
         # If the strings representing title, author, and publisher are all empty, spawn a
         # showerror messagebox and inform the user the need to enter information for the
         # Title, Author, and/or Publisher first, and return the string No Results
+        if title == "" and author == "" and publisher == "":
+            tkinter.messagebox.showerror(title="Invalid entries", message="Please enter category information!")
+            return "No Results"
 
         # Otherwise, search through the dictionary of books and select all objects that adhere to
         # the user’s data
-
+        bookSearchString = ""
+        for key in self.books:
+            if title in self.books[key][1] and author in self.books[key][3] and publisher in self.books[key][9]:
+                bookSearchString += f"Title: {self.books[key][1]}\n"
+                bookSearchString += f"Author(s): {self.books[key][3]}\n"
+                bookSearchString += f"Publisher: {self.books[key][9]}\n"
+                bookSearchString += "\n"
         # Return a string containing the Title, Author, and Publisher (with those titles at the top)
         # in neat, even columns, whose width is determined based on the length of the entries in the data
+        return bookSearchString
 
     def getReccomendations(self, type, title):
         x = 1
