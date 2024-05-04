@@ -117,3 +117,166 @@ class RecommenderGUI:
         self.__Book_stats_text.configure(state=tkinter.DISABLED)
         self.__Book_stats_text.pack(side=tkinter.BOTTOM)
 
+                ## Search Movies / TV Tab
+        self._Movies_TV_tab = tkinter.Frame(self._media_nb)
+        self._media_nb.add(self._Movies_TV_tab, text="Search Movies / TV")
+
+        # Adding a combobox widget for choice of options
+        self._CB_Frame = tkinter.Frame(self._Movies_TV_tab)
+        self._CB_Label = tkinter.Label(self._CB_Frame, text="Type of Media: ")
+        self._CB_Label.pack(padx = 10, pady = 10, side = tkinter.LEFT)
+        self._Movies_TV_options = ["Movies", "TV Shows"]
+        self._Movies_TV_CB = ttk.Combobox(self._CB_Frame, values = self._Movies_TV_options)
+        self._Movies_TV_CB.pack(padx = 10, pady = 10, side = tkinter.LEFT)
+        self._CB_Frame.pack()
+
+        # Adding label and entry widgets for user inputs
+        self._Movies_TV_title_frame = tkinter.Frame(self._Movies_TV_tab)
+        self._Movies_TV_Title_label = tkinter.Label(self._Movies_TV_title_frame, text = "Title: ")
+        self._Movies_TV_Title_Entry = tkinter.Entry(self._Movies_TV_title_frame, width = 50)
+        self._Movies_TV_Title_label.pack(padx = 10, pady = 10, side = tkinter.LEFT)
+        self._Movies_TV_Title_Entry.pack(padx = 10, pady = 10, side = tkinter.LEFT)
+        self._Movies_TV_title_frame.pack()
+
+        self._Director_frame = tkinter.Frame(self._Movies_TV_tab)
+        self._Director_label = tkinter.Label(self._Director_frame, text="Director: ")
+        self._Director_Entry = tkinter.Entry(self._Director_frame, width=50)
+        self._Director_label.pack(padx = 10, pady = 10, side = tkinter.LEFT)
+        self._Director_Entry.pack(padx = 10, pady = 10, side = tkinter.LEFT)
+        self._Director_frame.pack()
+
+        self._Actor_frame = tkinter.Frame(self._Movies_TV_tab)
+        self._Actor_label = tkinter.Label(self._Actor_frame, text="Actor: ")
+        self._Actor_Entry = tkinter.Entry(self._Actor_frame, width=50)
+        self._Actor_label.pack(padx = 10, pady = 10, side = tkinter.LEFT)
+        self._Actor_Entry.pack(padx = 10, pady = 10, side = tkinter.LEFT)
+        self._Actor_frame.pack()
+
+        self._Genre_frame = tkinter.Frame(self._Movies_TV_tab)
+        self._Genre_label = tkinter.Label(self._Genre_frame, text = "Genre: ")
+        self._Genre_entry = tkinter.Entry(self._Genre_frame, width=50)
+        self._Genre_label.pack(padx = 10, pady = 10, side = tkinter.LEFT)
+        self._Genre_entry.pack(padx = 10, pady = 10, side = tkinter.LEFT)
+        self._Genre_frame.pack()
+
+        # Adding a search button
+        self._Movies_TV_Search_button_frame = tkinter.Frame(self._Movies_TV_tab)
+        ####
+        self._Movies_TV_Search_button = tkinter.Button(self._Movies_TV_Search_button_frame,
+                                                        text= "Search Movies / TV Shows", command= rec.searchTVMovies)
+        ####
+        self._Movies_TV_Search_button.pack(padx = 10, pady = 10, side = tkinter.LEFT)
+        self._Movies_TV_Search_button_frame.pack()
+
+        # Adding a text frame for displaying search result
+        self._Movies_TV_text_Frame = tkinter.Frame(self._Movies_TV_tab)
+        self._Movies_TV_text_area = tkinter.Text(self._Movies_TV_text_Frame, wrap= tkinter.WORD)
+        ####
+        #### Add the entry.get functions in Recommender.py to link these together
+        ####
+        #### if no searches have been performed yet, display default messsage ####
+        #### User should not be able to edit data
+        self._Movies_TV_text_area.pack(padx = 10, pady = 10, side = tkinter.LEFT)
+
+        # Adding a vertical scroll bar for text area
+        self._Movies_TV_scrollbar = tkinter.Scrollbar(self._Movies_TV_text_Frame, orient=tkinter.VERTICAL)
+        self._Movies_TV_scrollbar.pack(side="right")
+        self._Movies_TV_scrollbar.configure(command=self._Movies_TV_text_area.yview)
+
+        ## Search Books Tab
+        self._Search_books_tab = tkinter.Frame(self._media_nb)
+        self._media_nb.add(self._Search_books_tab, text="Search Books")
+
+        # Adding label and entry widgets for user inputs
+        self._Books_title_frame = tkinter.Frame(self._Search_books_tab)
+        self._Books_Title_label = tkinter.Label(self._Books_title_frame, text="Title: ")
+        self._Books_Title_Entry = tkinter.Entry(self._Books_title_frame, width=50)
+        self._Books_Title_label.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._Books_Title_Entry.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._Books_title_frame.pack()
+
+        self._Author_frame = tkinter.Frame(self._Search_books_tab)
+        self._Author_label = tkinter.Label(self._Author_frame, text="Author: ")
+        self._Author_Entry = tkinter.Entry(self._Author_frame, width=50)
+        self._Author_label.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._Author_Entry.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._Author_frame.pack()
+
+        self._Publisher_frame = tkinter.Frame(self._Search_books_tab)
+        self._Publisher_label = tkinter.Label(self._Publisher_frame, text="Publisher: ")
+        self._Publisher_Entry = tkinter.Entry(self._Publisher_frame, width=50)
+        self._Publisher_label.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._Publisher_Entry.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._Publisher_frame.pack()
+
+        # Adding a search button
+        self._Books_Search_button_frame = tkinter.Frame(self._Search_books_tab)
+        ####
+        self._Books_Search_button = tkinter.Button(self._Books_Search_button_frame,
+                                                       text="Search Books", command=rec.searchBooks)
+        ####
+        self._Books_Search_button.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._Books_Search_button_frame.pack()
+
+        # Adding a text frame for displaying search result
+        self._Search_Books_text_Frame = tkinter.Frame(self._Search_books_tab)
+        self._Search_Books_text_area = tkinter.Text(self._Search_Books_text_Frame, wrap=tkinter.WORD)
+        ####
+        #### Add the entry.get functions in Recommender.py to link these together
+        ####
+        #### if no searches have been performed yet, display default messsage ####
+        #### User should not be able to edit data
+        self._Search_Books_text_area.pack(padx=10, pady=10, side=tkinter.LEFT)
+
+        # Adding a vertical scroll bar for text area
+        self._Search_Books_scrollbar = tkinter.Scrollbar(self._Search_Books_text_Frame, orient=tkinter.VERTICAL)
+        self._Search_Books_scrollbar.pack(side="right")
+        self._Search_Books_scrollbar.configure(command=self._Search_Books_text_area.yview)
+
+        ## Recommendations Tab
+        self._Recommendations_tab = tkinter.Frame(self._media_nb)
+        self._media_nb.add(self._Recommendations_tab, text="Recommendations")
+
+        # Adding a combobox widget for choice of options
+        self._RCB_Frame = tkinter.Frame(self._Recommendations_tab)
+        self._RCB_Label = tkinter.Label(self._RCB_Frame, text="Type of Media: ")
+        self._RCB_Label.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._RCB_Options = ["Movie", "TV Show", "Book"]
+        self._Recommendations_CB = ttk.Combobox(self._RCB_Frame, values=self._RCB_Options)
+        self._Recommendations_CB.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._RCB_Frame.pack()
+
+        # Adding label and entry widgets for user inputs
+        self._Recs_title_frame = tkinter.Frame(self._Recommendations_tab)
+        self._Recs_Title_label = tkinter.Label(self._Recs_title_frame, text="Title: ")
+        self._Recs_Title_Entry = tkinter.Entry(self._Recs_title_frame, width=50)
+        self._Recs_Title_label.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._Recs_Title_Entry.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._Recs_title_frame.pack()
+
+        # Adding a Get Recommendations button
+        self._Recs_button_frame = tkinter.Frame(self._Recommendations_tab)
+        ####
+        self._Recs_button = tkinter.Button(self._Recs_button_frame,
+                                                   text="Get Recommendations", command=rec.getRecommendations)
+        ####
+        self._Recs_button.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._Recs_button_frame.pack()
+
+        # Adding a text frame for displaying search result
+        self._Recs_text_Frame = tkinter.Frame(self._Recommendations_tab)
+        self._Recs_text_area = tkinter.Text(self._Recs_text_Frame, wrap=tkinter.WORD)
+        ####
+        #### Add the entry.get functions in Recommender.py to link these together
+        ####
+        #### if no searches have been performed yet, display default messsage ####
+        #### User should not be able to edit data
+        self._Recs_text_area.pack(padx=10, pady=10, side=tkinter.LEFT)
+
+        # Adding a vertical scroll bar for text area
+        self._Recommendations_scrollbar = tkinter.Scrollbar(self._Recs_text_Frame, orient=tkinter.VERTICAL)
+        self._Recommendations_scrollbar.pack(side="right")
+        self._Recommendations_scrollbar.configure(command=self._Recs_text_area.yview)
+
+        
+
