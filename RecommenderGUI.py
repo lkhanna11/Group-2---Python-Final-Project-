@@ -1,5 +1,7 @@
 # Importing the required libraries
 import tkinter
+from tkinter import ttk
+import Recommender as rec
 import tkinter.messagebox as messagebox
 
 # Class Definition
@@ -8,116 +10,104 @@ class RecommenderGUI:
     # Constructor function
     def __init__(self):
         ####
-        recommender_object = rec.Recommender()
+        self.recommender_object = rec.Recommender()
         ####
-        self.__main_window = tkinter.Tk()
-        self.__main_window.title("Media Recommender")
-        self.__main_window.geometry("1200x800")
+        self._main_window = tkinter.Tk()
+        self._main_window.title("Media Recommender")
+        self._main_window.geometry("1200x800")
 
         # Specifying notebook and its tabs
-        self.__media_nb = ttk.Notebook(self.__main_window)
-        self.__media_nb.pack(expand = 1, fill = tkinter.BOTH)
+        self._media_nb = ttk.Notebook(self._main_window)
+        self._media_nb.pack(expand = 1, fill = tkinter.BOTH)
 
         ## Movies Tab
-        self.__movies_tab = tkinter.Frame(self.__media_nb)
-        self.__media_nb.add(self.__movies_tab, text="Movies")
+        self._movies_tab = tkinter.Frame(self._media_nb)
+        self._media_nb.add(self._movies_tab, text="Movies")
 
         # Creating an inner frame for scrollable movies list
-        self.__movies_inner_frame = tkinter.Frame(self.__movies_tab)
-        self.__movies_inner_frame.pack()
+        self._movies_inner_frame = tkinter.Frame(self._movies_tab)
+        self._movies_inner_frame.pack()
 
         #### Using if-else block to display the default message instead of text boxes.
 
         # Loading movie lists and run time in the frame in non-editable manner
-        ####
-        self.__movies_data = recommender_object.getMovieList()
-        ####
-        self.__movies_text_area = tkinter.Text(self.__movies_inner_frame, wrap = tkinter.WORD)
-        self.__movies_text_area.insert(1.0, f"{self.__movies_data}")
-        self.__movies_text_area.configure(state= tkinter.DISABLED)
-        self.__movies_text_area.pack(side = "left")
+        self._movies_data = self.recommender_object.getMovieList()
+        self._movies_text_area = tkinter.Text(self._movies_inner_frame, wrap = tkinter.WORD)
+        self._movies_text_area.insert(1.0, f"{self._movies_data}")
+        self._movies_text_area.configure(state= tkinter.DISABLED)
+        self._movies_text_area.pack(side = "left")
 
         # Including a vertical scroll bar
-        self.__movies_scrollbar = tkinter.Scrollbar(self.__movies_inner_frame, orient= tkinter.VERTICAL)
-        self.__movies_scrollbar.pack(side = "right")
-        self.__movies_scrollbar.configure(command=self.__movies_text_area.yview)
+        self._movies_scrollbar = tkinter.Scrollbar(self._movies_inner_frame, orient= tkinter.VERTICAL)
+        self._movies_scrollbar.pack(side = "right")
+        self._movies_scrollbar.configure(command=self._movies_text_area.yview)
 
         # Loading movie stats in the frame in non-editable manner
-        ####
-        self.__movies_stats_data = recommender_object.getMovieStats()
-        ####
-        self.__movies_stats_text = tkinter.Text(self.__movies_tab, wrap= tkinter.WORD)
-        self.__movies_stats_text.insert(1.0, f"{self.__movies_stats_data}")
-        self.__movies_stats_text.configure(state= tkinter.DISABLED)
-        self.__movies_stats_text.pack(side = tkinter.BOTTOM)
+        self._movies_stats_data = self.recommender_object.getMovieStats()
+        self._movies_stats_text = tkinter.Text(self._movies_tab, wrap= tkinter.WORD)
+        self._movies_stats_text.insert(1.0, f"{self._movies_stats_data}")
+        self._movies_stats_text.configure(state= tkinter.DISABLED)
+        self._movies_stats_text.pack(side = tkinter.BOTTOM)
 
         ## TV Shows Tab
-        self.__TV_tab = tkinter.Frame(self.__media_nb)
-        self.__media_nb.add(self.__TV_tab, text="TV Shows")
+        self._TV_tab = tkinter.Frame(self._media_nb)
+        self._media_nb.add(self._TV_tab, text="TV Shows")
 
         # Creating an inner frame for scrollable TV list
-        self.__TV_inner_frame = tkinter.Frame(self.__TV_tab)
-        self.__TV_inner_frame.pack()
+        self._TV_inner_frame = tkinter.Frame(self._TV_tab)
+        self._TV_inner_frame.pack()
 
         #### Using if-else block to display the default message instead of text boxes.
 
         # Loading TV Shows lists and seasons in the frame in non-editable manner
-        ####
-        self.__TV_data = recommender_object.getTVList()
-        ####
-        self.__TV_text_area = tkinter.Text(self.__TV_inner_frame, wrap=tkinter.WORD)
-        self.__TV_text_area.insert(1.0, f"{self.__TV_data}")
-        self.__TV_text_area.configure(state=tkinter.DISABLED)
-        self.__TV_text_area.pack(side="left")
+        self._TV_data = self.recommender_object.getTVList()
+        self._TV_text_area = tkinter.Text(self._TV_inner_frame, wrap=tkinter.WORD)
+        self._TV_text_area.insert(1.0, f"{self._TV_data}")
+        self._TV_text_area.configure(state=tkinter.DISABLED)
+        self._TV_text_area.pack(side="left")
 
         # Including a vertical scroll bar
-        self.__TV_scrollbar = tkinter.Scrollbar(self.__TV_inner_frame, orient=tkinter.VERTICAL)
-        self.__TV_scrollbar.pack(side="right")
-        self.__TV_scrollbar.configure(command=self.__TV_text_area.yview)
+        self._TV_scrollbar = tkinter.Scrollbar(self._TV_inner_frame, orient=tkinter.VERTICAL)
+        self._TV_scrollbar.pack(side="right")
+        self._TV_scrollbar.configure(command=self._TV_text_area.yview)
 
         # Loading TV Shows stats in the frame in non-editable manner
-        ####
-        self.__TV_stats_data = recommender_object.getTVStats()
-        ####
-        self.__TV_stats_text = tkinter.Text(self.__TV_tab, wrap=tkinter.WORD)
-        self.__TV_stats_text.insert(1.0, f"{self.__TV_stats_data}")
-        self.__TV_stats_text.configure(state=tkinter.DISABLED)
-        self.__TV_stats_text.pack(side=tkinter.BOTTOM)
+        self._TV_stats_data = self.recommender_object.getTVStats()
+        self._TV_stats_text = tkinter.Text(self._TV_tab, wrap=tkinter.WORD)
+        self._TV_stats_text.insert(1.0, f"{self._TV_stats_data}")
+        self._TV_stats_text.configure(state=tkinter.DISABLED)
+        self._TV_stats_text.pack(side=tkinter.BOTTOM)
 
         ## Book Tab
-        self.__Book_tab = tkinter.Frame(self.__media_nb)
-        self.__media_nb.add(self.__Book_tab, text="Books")
+        self._Book_tab = tkinter.Frame(self._media_nb)
+        self._media_nb.add(self._Book_tab, text="Books")
 
         # Creating an inner frame for scrollable Book list
-        self.__Book_inner_frame = tkinter.Frame(self.__Book_tab)
-        self.__Book_inner_frame.pack()
+        self._Book_inner_frame = tkinter.Frame(self._Book_tab)
+        self._Book_inner_frame.pack()
 
         #### Using if-else block to display the default message instead of text boxes.
 
         # Loading Book lists and authors in the frame in non-editable manner
-        ####
-        self.__Book_data = recommender_object.getBookList()
-        ####
-        self.__Book_text_area = tkinter.Text(self.__Book_inner_frame, wrap=tkinter.WORD)
-        self.__Book_text_area.insert(1.0, f"{self.__Book_data}")
-        self.__Book_text_area.configure(state=tkinter.DISABLED)
-        self.__Book_text_area.pack(side="left")
+        self._Book_data = self.recommender_object.getBookList()
+        self._Book_text_area = tkinter.Text(self._Book_inner_frame, wrap=tkinter.WORD)
+        self._Book_text_area.insert(1.0, f"{self._Book_data}")
+        self._Book_text_area.configure(state=tkinter.DISABLED)
+        self._Book_text_area.pack(side="left")
 
         # Including a vertical scroll bar
-        self.__Book_scrollbar = tkinter.Scrollbar(self.__Book_inner_frame, orient=tkinter.VERTICAL)
-        self.__Book_scrollbar.pack(side="right")
-        self.__Book_scrollbar.configure(command=self.__Book_text_area.yview)
+        self._Book_scrollbar = tkinter.Scrollbar(self._Book_inner_frame, orient=tkinter.VERTICAL)
+        self._Book_scrollbar.pack(side="right")
+        self._Book_scrollbar.configure(command=self._Book_text_area.yview)
 
         # Loading Book stats in the frame in non-editable manner
-        ####
-        self.__Book_stats_data = recommender_object.getBookStats()
-        ####
-        self.__Book_stats_text = tkinter.Text(self.__Book_tab, wrap=tkinter.WORD)
-        self.__Book_stats_text.insert(1.0, f"{self.__Book_stats_data}")
-        self.__Book_stats_text.configure(state=tkinter.DISABLED)
-        self.__Book_stats_text.pack(side=tkinter.BOTTOM)
+        self._Book_stats_data = self.recommender_object.getBookStats()
+        self._Book_stats_text = tkinter.Text(self._Book_tab, wrap=tkinter.WORD)
+        self._Book_stats_text.insert(1.0, f"{self._Book_stats_data}")
+        self._Book_stats_text.configure(state=tkinter.DISABLED)
+        self._Book_stats_text.pack(side=tkinter.BOTTOM)
 
-                ## Search Movies / TV Tab
+        ## Search Movies / TV Tab
         self._Movies_TV_tab = tkinter.Frame(self._media_nb)
         self._media_nb.add(self._Movies_TV_tab, text="Search Movies / TV")
 
@@ -163,7 +153,7 @@ class RecommenderGUI:
         self._Movies_TV_Search_button_frame = tkinter.Frame(self._Movies_TV_tab)
         ####
         self._Movies_TV_Search_button = tkinter.Button(self._Movies_TV_Search_button_frame,
-                                                        text= "Search Movies / TV Shows", command= rec.searchTVMovies)
+                                                        text= "Search Movies / TV Shows", command= self.searchShows)
         ####
         self._Movies_TV_Search_button.pack(padx = 10, pady = 10, side = tkinter.LEFT)
         self._Movies_TV_Search_button_frame.pack()
@@ -171,11 +161,9 @@ class RecommenderGUI:
         # Adding a text frame for displaying search result
         self._Movies_TV_text_Frame = tkinter.Frame(self._Movies_TV_tab)
         self._Movies_TV_text_area = tkinter.Text(self._Movies_TV_text_Frame, wrap= tkinter.WORD)
-        ####
-        #### Add the entry.get functions in Recommender.py to link these together
-        ####
+
         #### if no searches have been performed yet, display default messsage ####
-        #### User should not be able to edit data
+
         self._Movies_TV_text_area.pack(padx = 10, pady = 10, side = tkinter.LEFT)
 
         # Adding a vertical scroll bar for text area
@@ -213,7 +201,7 @@ class RecommenderGUI:
         self._Books_Search_button_frame = tkinter.Frame(self._Search_books_tab)
         ####
         self._Books_Search_button = tkinter.Button(self._Books_Search_button_frame,
-                                                       text="Search Books", command=rec.searchBooks)
+                                                       text="Search Books", command=self.searchBooks)
         ####
         self._Books_Search_button.pack(padx=10, pady=10, side=tkinter.LEFT)
         self._Books_Search_button_frame.pack()
@@ -221,11 +209,9 @@ class RecommenderGUI:
         # Adding a text frame for displaying search result
         self._Search_Books_text_Frame = tkinter.Frame(self._Search_books_tab)
         self._Search_Books_text_area = tkinter.Text(self._Search_Books_text_Frame, wrap=tkinter.WORD)
-        ####
-        #### Add the entry.get functions in Recommender.py to link these together
-        ####
+
         #### if no searches have been performed yet, display default messsage ####
-        #### User should not be able to edit data
+
         self._Search_Books_text_area.pack(padx=10, pady=10, side=tkinter.LEFT)
 
         # Adding a vertical scroll bar for text area
@@ -258,7 +244,7 @@ class RecommenderGUI:
         self._Recs_button_frame = tkinter.Frame(self._Recommendations_tab)
         ####
         self._Recs_button = tkinter.Button(self._Recs_button_frame,
-                                                   text="Get Recommendations", command=rec.getRecommendations)
+                                                   text="Get Recommendations", command=self.getRecommendations)
         ####
         self._Recs_button.pack(padx=10, pady=10, side=tkinter.LEFT)
         self._Recs_button_frame.pack()
@@ -266,9 +252,6 @@ class RecommenderGUI:
         # Adding a text frame for displaying search result
         self._Recs_text_Frame = tkinter.Frame(self._Recommendations_tab)
         self._Recs_text_area = tkinter.Text(self._Recs_text_Frame, wrap=tkinter.WORD)
-        ####
-        #### Add the entry.get functions in Recommender.py to link these together
-        ####
         #### if no searches have been performed yet, display default messsage ####
         #### User should not be able to edit data
         self._Recs_text_area.pack(padx=10, pady=10, side=tkinter.LEFT)
@@ -278,16 +261,103 @@ class RecommenderGUI:
         self._Recommendations_scrollbar.pack(side="right")
         self._Recommendations_scrollbar.configure(command=self._Recs_text_area.yview)
 
+        ## Notebook Buttons
+        self._NB_buttons_frame = tkinter.Frame(self._media_nb)
+        self._NB_button_1 = tkinter.Button(self._NB_buttons_frame, text="Load Shows", command=self.loadShows)
+        self._NB_button_2 = tkinter.Button(self._NB_buttons_frame, text="Load Books", command=self.loadBooks)
+        self._NB_button_3 = tkinter.Button(self._NB_buttons_frame, text="Load Associations", command=self.loadAssociations)
+        self._NB_button_4 = tkinter.Button(self._NB_buttons_frame, text="Information", command=self.creditInfoBox)
+        self._NB_button_5 = tkinter.Button(self._NB_buttons_frame, text= "Quit", command=self._media_nb.destroy)
 
-        # Adding a Notebook button
-        self._Notebook_button_frame = tkinter.Frame(self._Notebook_tab)
-        ####
-        self._Notebook_button = tkinter.Button(self.__Notebook_button_frame,
-                                                       text="Notebook", command=rec.noteBook)
-        ####
-        self._Notebook_button.pack(padx=10, pady=10, side=tkinter.LEFT)
-        self._Notebook_button_frame.pack()
+        self._NB_button_1.pack(padx=35, side = tkinter.LEFT)
+        self._NB_button_2.pack(padx=35, side=tkinter.LEFT)
+        self._NB_button_3.pack(padx=35, side=tkinter.LEFT)
+        self._NB_button_4.pack(padx=35, side=tkinter.LEFT)
+        self._NB_button_5.pack(padx=35, side=tkinter.LEFT)
+        self._NB_buttons_frame.pack()
 
+    # Defining functions for the class
+    def loadShows(self):
+        self.recommender_object.loadShows()
+        # Loading all the movies using functions of recommender_object and updating text area
+        movie_list = self.recommender_object.getMovieList()
+        self._movies_text_area.insert(1.0, f"{movie_list}")
+        self._movies_text_area.configure(state=tkinter.DISABLED)
 
-        
+        # Loading the Movie stats
+        movie_Stats = self.recommender_object.getMovieStats()
+        self._movies_stats_text.insert(1.0, f"{movie_Stats}")
+        self._movies_stats_text.configure(state=tkinter.DISABLED)
 
+        # Loading all the TV Shows using functions of recommender_object and updating text area
+        TV_list = self.recommender_object.getTVList()
+        self._TV_text_area.insert(1.0, f"{TV_list}")
+        self._TV_text_area.configure(state=tkinter.DISABLED)
+
+        # Loading the TV Stats
+        TV_Stats = self.recommender_object.getTVStats()
+        self._TV_stats_text.insert(1.0, f"{TV_Stats}")
+        self._TV_stats_text.configure(state = tkinter.DISABLED)
+
+    def loadBooks(self):
+        # Loading all the Books using functions of recommender_object and updating text area
+        self.recommender_object.loadBooks()
+        books_list = self.recommender_object.getBookList()
+        self._Book_text_area.insert(1.0, f"{books_list}")
+        self._Book_text_area.configure(state=tkinter.DISABLED)
+
+        # Loading the Books Stats
+        books_stats = self.recommender_object.getBookStats()
+        self._Book_stats_text.insert(1.0, f"{books_stats}")
+        self._Book_stats_text.configure(state=tkinter.DISABLED)
+
+    def loadAssociations(self):
+        # Loading all the associations using functions of recommender_object and updating the text area
+        self.recommender_object.loadAssociations()
+
+    def creditInfoBox(self):
+        # Spawns a messagebox with names of the team members
+        messagebox.showinfo(title="Group Project Details", message="Completed on May 5, 2024 by: \n "
+                                                                   "Alexander Beke \n "
+                                                                   "Latika Khanna \n"
+                                                                   "Zijie Ma \n")
+
+    def searchShows(self):
+        # Extracting data from the combobox and entry widgets
+        CB_choice = self._Movies_TV_CB.get()
+        Title = self._Movies_TV_Title_Entry.get()
+        Director = self._Director_Entry.get()
+        Actor = self._Actor_Entry.get()
+        Genre = self._Genre_entry.get()
+
+        # Calling the function on recommender object and storing it
+        search_result = self.recommender_object.searchTVMovies(CB_choice, Title, Director, Actor, Genre)
+
+        # Updating the text area
+        self._Movies_TV_text_area.insert(1.0, f"{search_result}")
+        self._Movies_TV_text_area.configure(state= tkinter.DISABLED)
+
+    def searchBooks(self):
+        # Extracting data from the entry widgets
+        Title = self._Books_Title_Entry.get()
+        Author = self._Author_Entry.get()
+        Publisher = self._Publisher_Entry.get()
+
+        # Calling the function on recommender object and storing it
+        search_result = self.recommender_object.searchBooks(Title, Author, Publisher)
+
+        # Updating the text area
+        self._Search_Books_text_area.insert(1.0, f"{search_result}")
+        self._Search_Books_text_area.configure(state=tkinter.DISABLED)
+
+    def getRecommendations(self):
+        # Extracting data from combobox and entry widgets
+        CB_choice = self._Recommendations_CB.get()
+        Title = self._Recs_Title_Entry.get()
+
+        # Calling the function on recommender object and storing it
+        get_rec_result = self.recommender_object.getRecommendations(CB_choice, Title)
+
+        # Updating the text area
+        self._Recs_text_area.insert(1.0, f"{get_rec_result}")
+        self._Recs_text_area.configure(state=tkinter.DISABLED)
