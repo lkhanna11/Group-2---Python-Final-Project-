@@ -278,5 +278,16 @@ class RecommenderGUI:
         self._Recommendations_scrollbar.pack(side="right")
         self._Recommendations_scrollbar.configure(command=self._Recs_text_area.yview)
 
+
+        # Adding a Notebook button
+        self._Notebook_button_frame = tkinter.Frame(self._Notebook_tab)
+        ####
+        self._Notebook_button = tkinter.Button(self.__Notebook_button_frame,
+                                                       text="Notebook", command=rec.noteBook)
+        ####
+        self._Notebook_button.pack(padx=10, pady=10, side=tkinter.LEFT)
+        self._Notebook_button_frame.pack()
+
+
         
 
