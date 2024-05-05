@@ -1,5 +1,5 @@
 #
-#   LAST UPDATED: FRIDAY 5/4
+#   LAST UPDATED: SATURDAY 5/4
 # To do:
 # - Test all functions
 
@@ -359,9 +359,7 @@ class Recommender:
     #Notebook function
     def noteBook(self):
         moive_showRating = []
-        moive_showRating_times = {}
         tvShow_showRating = []
-        tvShow_showRating_times = {}
 
         for value in self.shows:
             if self.shows[value][3] == "Movie":
