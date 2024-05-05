@@ -1,11 +1,14 @@
 #
-#   LAST UPDATED: FRIDAY 5/3
+#   LAST UPDATED: FRIDAY 5/4
 # To do:
 # - Test all functions
 
 import os
 import tkinter.filedialog
 import tkinter.messagebox
+
+import matplotlib.pyplot as plt
+from collections import Counter
 
 from Book import Book
 from Media import Media
@@ -352,3 +355,36 @@ class Recommender:
                     else:
                         tkinter.messagebox.showwarning(title="Warning", message="There are no recommendations for that title.")
                         return "No Results"
+
+    #Notebook function
+    def noteBook(self):
+        moive_showRating = []
+        moive_showRating_times = {}
+        tvShow_showRating = []
+        tvShow_showRating_times = {}
+
+        for value in self.shows:
+            if self.shows[value][3] == "Movie":
+                moive_showRating.append(value[-4])
+
+            elif self.shows[value][3] == "TV Show":
+                tvShow_showRating.append(value[-4])
+
+        moive_showRating_times = Counter(moive_showRating)
+
+        tvShow_showRating_times = Counter(tvShow_showRating)
+
+        labels1 = list(moive_showRating_times.keys())
+        sizes1 = list(moive_showRating_times.values())
+
+        labels2 = list(tvShow_showRating_times.keys())
+        sizes2 = list(tvShow_showRating_times.values())
+
+        plt.figure(figsize=(10, 5))
+        plt.subplot(1, 2, 1)
+        plt.pie(sizes1, labels=labels1, autopct='%1.1f%%', startangle=140)
+        plt.title('Movie Rating and their percentage')
+
+        plt.subplot(1, 2, 2)
+        plt.pie(sizes2, labels=labels2, autopct='%1.1f%%', startangle=140)
+        plt.title('TV Show Rating and their percentage')
