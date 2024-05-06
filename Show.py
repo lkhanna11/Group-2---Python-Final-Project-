@@ -1,8 +1,13 @@
+# Authors : Alexander Beke , Latika Khanna, Zijie Ma
+# Date : May 5, 2024
+# Description : This program contains the Show Class for the Media Library
+
+
 from Media import Media
 
 class Show(Media):
-    def __init__(self, id, title, rating, type, director, actor, country, added_date, released_year,showRating,duration,genre, description):
-        super().__init__(id, title, rating)
+    def __init__(self, show_id,type,title,director,actor,average_rating,country,added_date,released_year,showRating,duration,genre,description):
+        super().__init__(show_id, title, average_rating)
         self.__type = type
         self.__director = director
         self.__actor = actor
