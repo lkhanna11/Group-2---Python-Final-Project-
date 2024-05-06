@@ -1,6 +1,6 @@
-
-
-
+# Authors : Alexander Beke , Latika Khanna, Zijie Ma
+# Date : May 5, 2024
+# Description : This program contains the Media Class for the Media Library
 
 
 class Media:
@@ -8,7 +8,6 @@ class Media:
         self._id = id
         self._title = title
         self._rating = rating
-
 
     def get_id(self):
         return self._id
