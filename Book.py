@@ -1,10 +1,16 @@
+# Authors : Alexander Beke , Latika Khanna, Zijie Ma
+# Date : May 5, 2024
+# Description : This program contains the Book Class for the Media Library
+
+
 from Media import Media
 
 class Book(Media):
-    def __init__(self,id,title,rating,authors,isbnNum, language, pages, rating_number, publication, publisher):
-        super().__init__(id,title,rating)
+    def __init__(self,bookID,title,authors,average_rating,isbn,isbn13,language,pages,rating_number,publication,publisher):
+        super().__init__(bookID,title,average_rating)
         self.__authors = authors
-        self.__isbnNum = isbnNum
+        self.__isbnNum = isbn
+        self.__isbn13 = isbn13
         self.__language = language
         self.__pages = pages
         self.__rating_number = rating_number
@@ -23,6 +29,12 @@ class Book(Media):
 
     def set_isbnNum(self, value):
         self.__isbnNum = value
+
+    def get_isbn13(self):
+        return self.__isbn13
+
+    def set_isbn13(self, value):
+        self.__isbn13 = value
 
     def get_language(self):
         return self.__language
